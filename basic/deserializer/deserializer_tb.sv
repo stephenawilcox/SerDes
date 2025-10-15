@@ -1,3 +1,7 @@
+/*
+Copyright (c) 2025 Stephen Wilcox. All rights reserved
+Not for use in commercial or non-commercial products or projects.
+*/
 `timescale 1ns/1ps
 module deserializer_tb();
     parameter integer in_bit_width = 32;
@@ -57,13 +61,16 @@ module deserializer_tb();
             if (write_data) begin
                 //setting exp_data_out
                 for (i = (wr_count * num_segments)+1; i <= (wr_count * num_segments)+num_segments; i++) begin
-                    //$display("write_data: %d, i-1: %d, data[i-1]", write_data, i-1, data[i-1]);
+                    //$display("write_data: %d, i-1: %d, data[i-1]: %d", write_data, i-1, data[i-1]);
                     exp_data_out[in_bit_width*(i-1) +: in_bit_width] = data[i-1];
                     //$display("exp_data_out: %h", exp_data_out);
                 end
                 wr_count++;
                 if (data_out != exp_data_out) begin
-                    $display("Error at wr_count %d, data_out: %h, exp_data_out: %h", wr_count, data_out, exp_data_out);
+                    // $display("Error at wr_count %d, data_out: %h, exp_data_out: %h", wr_count, data_out, exp_data_out);
+                    $display("Error at wr_count %d,     data_out: %h", wr_count, data_out);
+                    $display("Error at wr_count %d, exp_data_out: %h", wr_count, exp_data_out);
+                    $display("");
                 end
             end
             #10;

@@ -1,3 +1,7 @@
+/*
+Copyright (c) 2025 Stephen Wilcox. All rights reserved
+Not for use in commercial or non-commercial products or projects.
+*/
 module deserializer #(
     parameter integer in_bit_width = 32,
     parameter integer out_bit_width = 512
@@ -72,7 +76,7 @@ always @ (*) begin
     // localparam IDLE = 1'b0, BUSY = 1'b1; --> current_state will be IDLE or BUSY
     read_data = current_state & data_ready;
     write_data = seg_ctr_all_zeros & prev_state;
-    seg_counter_q = current_state ? (seg_counter + current_state) : 0; 
+    seg_counter_q = current_state ? (seg_counter + read_data) : 0; 
     data_out = buffer;
 end
 
