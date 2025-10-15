@@ -11,12 +11,12 @@ module serializer_tb();
     wire read_data, write_data;
     wire [out_bit_width-1:0] data_out;
 
-    integer num_segments = in_bit_width/out_bit_width;
+    integer num_segments = in_bit_width / out_bit_width;
 
     reg [out_bit_width-1:0] data [16];
     reg [out_bit_width-1:0] prev_data_out;
 
-    integer i, j, count, wr_count;
+    integer i, j, rd_count, wr_count;
 
     serializer #(.in_bit_width(in_bit_width), .out_bit_width(out_bit_width)) ser_inst (
         .clk(clk),
@@ -33,7 +33,7 @@ module serializer_tb();
         $dumpfile("serializer.vcd");
         $dumpvars(0, serializer_tb);
 
-        count = 0;
+        rd_count = 0;
         wr_count = 0;
         prev_data_out = 0;
 
@@ -48,14 +48,14 @@ module serializer_tb();
             if (read_data) begin
                 //setting data
                 for (i = 0; i < num_segments; i++) begin
-                    data[i] = i + (count * num_segments);
+                    data[i] = i + (rd_count * num_segments);
                 end
                 //setting data_in
                 for (i = 1; i <= num_segments; i++) begin
                     //data_in[out_bit_width*i - 1: out_bit_width * (i-1)] = data[i-1];
                     data_in[out_bit_width*(i-1) +: out_bit_width] = data[i-1];
                 end
-                count++;
+                rd_count++;
             end
             if (write_data) begin
                 wr_count++;
